@@ -1,5 +1,7 @@
 import express from 'express';
 
+const db = require("./config/database");
+
 import createHomepage from './views/index.js';
 
 // create app

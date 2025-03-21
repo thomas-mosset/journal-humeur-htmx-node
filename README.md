@@ -2,8 +2,9 @@
 
 ## Technologies utilisées
 
-- HTMX
-- Node + Express
+- Front-end : HTMX
+- Back-end : Node + Express
+- Base de données : SQLite
 
 ## Lancer l'app
 
@@ -18,3 +19,9 @@ nodemon app.js
 ```
 
 [Se rendre sur l'application via le port 3000](http://localhost:3000/)
+
+## Créer la base de données
+
+```sh
+node config/database.js
+```
