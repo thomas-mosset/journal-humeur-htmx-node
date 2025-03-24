@@ -2,7 +2,7 @@
 
 ## Technologies utilisées
 
-- Front-end : HTMX
+- Front-end : HTMX + CSS
 - Back-end : Node + Express
 - Base de données : SQLite
 - API : [emoji-api](https://emoji-api.com/)
