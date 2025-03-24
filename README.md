@@ -5,6 +5,8 @@
 - Front-end : HTMX
 - Back-end : Node + Express
 - Base de données : SQLite
+- API : [emoji-api](https://emoji-api.com/)
+- Autres : Node fetch + Dotenv
 
 ## Lancer l'app
 

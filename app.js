@@ -1,7 +1,16 @@
 import express from 'express';
-
+import fetch from "node-fetch";
 import db from "./config/database.js";
 
+// .env file
+import dotenv from 'dotenv';
+dotenv.config();
+
+// API + URL
+const EMOJI_API_KEY = process.env.EMOJI_API_KEY;
+const EMOJI_API_URL = `https://emoji-api.com/emojis?access_key=${EMOJI_API_KEY}`;
+
+// Views
 import createHomepage from './views/index.js';
 
 // create app
@@ -11,11 +20,39 @@ app.use(express.urlencoded({extended: false}));
 // static assets
 app.use(express.static('public'));
 
-// routes
-app.get('/', (req, res) => {
-    res.send(createHomepage());
+
+// FUNCTIONS
+const fetchEmojis = async () => {
+    try {
+        const response = await fetch(EMOJI_API_URL);
+        const emojis = await response.json();
+        const relevantCategories = ["smileys-emotion", "people-body", "activities", "travel-places"];
+        const filteredEmojis = emojis.filter(emoji => relevantCategories.includes(emoji.group));
+
+        return filteredEmojis.map(emoji => `
+            <button class="emoji" data-value="${emoji.character}">${emoji.character}</button>
+        `).join("");
+    } catch (error) {
+        console.error("Erreur lors de la récupération des émojis :", error);
+        return "<p>Impossible de charger les émojis.</p>";
+    }
+};
+
+
+// GET ROUTES
+app.get('/', async (req, res) => {
+    try {
+        // Récupérer les émojis avant de créer la page
+        const emojiHTML = await fetchEmojis();
+        res.send(createHomepage(emojiHTML));
+    } catch (error) {
+        console.error("Erreur lors du chargement des émojis :", error);
+        res.status(500).send("Erreur lors du chargement de la page.");
+    }
 });
 
+
+// POST ROUTES
 app.post('/moods', (req, res) => {
     const { date, mood, comment } = req.body;
 
@@ -30,8 +67,6 @@ app.post('/moods', (req, res) => {
             return res.status(500).send("Erreur lors de l'ajout de l'humeur");
         }
 
-        // res.redirect('/');
-
         res.send(`
             <li>
                 <strong>${date}</strong> - ${mood} <br>
@@ -40,6 +75,14 @@ app.post('/moods', (req, res) => {
         `);
     })
 });
+
+app.post('/select-emoji', (req, res) => {
+    const { emoji } = req.body;
+    res.send(`
+        <input type="text" id="mood" name="mood" value="${emoji}" readonly />
+    `);
+});
+
 
 // listen to port
 app.listen(3000, () => {
