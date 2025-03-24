@@ -60,6 +60,14 @@ body {
     background-color: whitesmoke;
 }
 
+#clear-mood {
+    margin: 0 0.3rem;
+    background-color: whitesmoke;
+    border: rgb(156, 156, 156) solid 0.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .form-textarea {
     width: 85%;
 }

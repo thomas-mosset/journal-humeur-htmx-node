@@ -31,6 +31,11 @@ const createHomepage = (emojiHTML) => /*html*/`
                         <div class="div-inside-form">
                             <label for="mood" class="form-label">Entrez votre humeur du jour :</label>
                             <input class="form-input" type="text" id="mood" name="mood" placeholder="Cliquez sur un emoji" readonly />
+                            <button 
+                                type="button" 
+                                id="clear-mood"
+                                hx-on:click="document.getElementById('mood').value = ''"
+                            >Supprimer ❌</button> <!-- Bouton pour vider l'input des emojis -->
 
                             <div id="emoji-picker-board">
                                 ${emojiHTML} <!-- Émojis chargés directement -->
