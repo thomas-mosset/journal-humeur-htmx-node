@@ -1,0 +1,91 @@
+/* GENERAL */
+body {
+    font-family: "Gill Sans", sans-serif;
+}
+
+/* HEADER */
+.header {
+    margin: 5rem 2rem;
+    text-align: center;
+}
+
+.header-title {
+    color: #c44601;
+}
+
+
+/* MAIN */
+.main {
+    margin: 5rem 2rem;
+}
+
+.div-form-title {
+    margin-left: 1rem;
+}
+
+.div-form-title, .moods-title {
+    color: #c44601;
+}
+
+.form > div {
+    margin: 1rem;
+}
+
+.div-inside-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.form-label {
+    margin-right: 0.3rem;
+}
+
+#emoji-picker-board {
+    width: 100%;
+    margin: 2rem 1rem;
+    padding: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: whitesmoke;
+    border: whitesmoke solid 1px;
+    border-radius: 5px;
+}
+
+.emoji {
+    margin: 0.2rem 0.1rem;
+    border: rgb(156, 156, 156) solid 0.1rem;
+    border-radius: 5px;
+    background-color: whitesmoke;
+}
+
+.form-textarea {
+    width: 85%;
+}
+
+.div-btn {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.form-btn {
+    padding: 0.8rem 1rem;
+    border: #c44601 solid 0.1rem;
+    border-radius: 5px;
+    background-color: #c44601;
+    color: white;
+    font-family: "Gill Sans", sans-serif;
+    cursor: pointer;
+}
+
+.form-btn:hover {
+    background-color: #9c3700;
+    border: #9c3700 solid 0.1rem;
+}
+
+/* MOOD LIST */
+.mood-list-item {
+    list-style: square;
+    margin: 0.5rem 0;
+}

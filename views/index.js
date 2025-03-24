@@ -10,45 +10,46 @@ const createHomepage = (emojiHTML) => /*html*/`
         </head>
 
         <body>
-            <header>
-                <h1>Journal d'humeur</h1>
+            <header class="header">
+                <h1 class="header-title">Journal d'humeur</h1>
             </header>
 
-            <main>
-                <div class="form">
-                    <h2>Quelle est ton humeur aujourd'hui ?</h2>
+            <main class="main">
+                <div class="div-form">
+                    <h2 class="div-form-title">Quelle est ton humeur aujourd'hui ?</h2>
                     <form 
                         hx-post="/moods" 
                         hx-target="#moods-list" 
                         hx-swap="beforeend"
+                        class="form"
                     >
-                        <div>
-                            <label for="date">Entrez une date :</label>
-                            <input type="text" id="date" name="date" required />
+                        <div class="div-inside-form">
+                            <label for="date" class="form-label">Entrez une date :</label>
+                            <input class="form-input" type="text" id="date" name="date" placeholder="JJ-MM-AAAA" required />
                         </div>
 
-                        <div>
-                            <label for="mood">Entrez votre humeur du jour :</label>
-                            <input type="text" id="mood" name="mood" placeholder="Cliquez sur un emoji" readonly />
+                        <div class="div-inside-form">
+                            <label for="mood" class="form-label">Entrez votre humeur du jour :</label>
+                            <input class="form-input" type="text" id="mood" name="mood" placeholder="Cliquez sur un emoji" readonly />
 
                             <div id="emoji-picker-board">
                                 ${emojiHTML} <!-- Émojis chargés directement -->
                             </div>
                         </div>
 
-                        <div>
-                            <label for="comment">Commentaire :</label>
-                            <textarea name="comment" id="comment"></textarea>
+                        <div class="div-inside-form">
+                            <label for="comment" class="form-label">Commentaire (optionnel) :</label>
+                            <textarea class="form-textarea" name="comment" id="comment" rows="5" cols="50"></textarea>
                         </div>
 
-                        <div>
-                            <button type="submit">Ajouter mon humeur</button>
+                        <div class="div-btn">
+                            <button type="submit" class="form-btn">Ajouter mon humeur</button>
                         </div>
                     </form>
                 </div>
 
                 <div class="moods">
-                    <h2>Historique des humeurs</h2>
+                    <h2 class="moods-title">Historique des humeurs</h2>
                     <ul id="moods-list"></ul>
                 </div>
             </main>

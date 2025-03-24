@@ -68,8 +68,8 @@ app.post('/moods', (req, res) => {
         }
 
         res.send(`
-            <li>
-                <strong>${date}</strong> - ${mood} <br>
+            <li class="mood-list-item">
+                <strong>${date}</strong> : ${mood} <br>
                 ${comment ? `<em>${comment}</em>` : ""}
             </li>
         `);
