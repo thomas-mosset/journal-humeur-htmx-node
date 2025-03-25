@@ -1,8 +1,13 @@
 const createListTemplate = (moods) => /*html*/`
-    ${moods.map((mood) => `
+    ${moods.map((mood) => /*html*/`
         <li class="mood-list-item">
-            <strong>${mood.date}</strong> : ${mood.mood} <br>
-            ${mood.comment ? `<em>${mood.comment}</em>` : ""}
+            <span>${mood.date} :</span> ${mood.mood}
+            ${mood.comment ? `<span>${mood.comment}</span>` : ""}
+
+            <div class="moods-btn">
+                <button>Modifier ✏️</button>
+                <button>Supprimer ❌</button>
+            </div>
         </li>
     `).join("")}
 `;
