@@ -12,6 +12,7 @@ const EMOJI_API_URL = `https://emoji-api.com/emojis?access_key=${EMOJI_API_KEY}`
 
 // Views
 import createHomepage from './views/index.js';
+import createListTemplate from './views/listTemplate.js';
 
 // create app
 const app = express();
@@ -53,6 +54,21 @@ app.get('/', async (req, res) => {
         console.error("Erreur lors du chargement des émojis :", error);
         res.status(500).send("Erreur lors du chargement de la page.");
     }
+});
+
+app.get('/moods', (req, res) => {
+    const query = `SELECT * FROM moods`;
+
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            console.error("Erreur lors de la récupération des humeurs :", err);
+            return res.status(500).send("Erreur interne du serveur");
+        }
+
+        // test to see data : res.json(rows);
+
+        res.send(createListTemplate(rows));
+    });
 });
 
 

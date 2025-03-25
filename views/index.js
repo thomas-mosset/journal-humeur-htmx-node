@@ -55,7 +55,7 @@ const createHomepage = (emojiHTML) => /*html*/`
 
                 <div class="moods">
                     <h2 class="moods-title">Historique des humeurs</h2>
-                    <ul id="moods-list"></ul>
+                    <ul id="moods-list" hx-get="/moods" hx-trigger="load" hx-swap="innerHTML"></ul>
                 </div>
             </main>
 
