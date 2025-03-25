@@ -104,6 +104,29 @@ app.post('/select-emoji', (req, res) => {
 });
 
 
+// EDIT ROUTES
+// TODO
+
+// DELETE ROUTES
+app.delete('/moods/:id', (req, res) => {
+    const id = req.params.id;
+
+    const query = `DELETE FROM moods WHERE id = ?`;
+
+    db.run(query, [id], function (err) {
+        if (err) {
+            console.error("Erreur lors de la suppression de l'humeur :", err);
+            return res.status(500).send("Erreur interne du serveur");
+        }
+
+        if (this.changes === 0) {
+            return res.status(404).send("Humeur non trouvée");
+        }
+
+        res.send(); // send an empty respond
+    });
+});
+
 // listen to port
 app.listen(3000, () => {
     console.log('App listening on port 3000');
