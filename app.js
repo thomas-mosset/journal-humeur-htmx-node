@@ -30,7 +30,11 @@ const fetchEmojis = async () => {
         const filteredEmojis = emojis.filter(emoji => relevantCategories.includes(emoji.group));
 
         return filteredEmojis.map(emoji => `
-            <button class="emoji" data-value="${emoji.character}">${emoji.character}</button>
+            <button 
+                class="emoji"
+                type="button"
+                data-value="${emoji.character}"
+            >${emoji.character}</button>
         `).join("");
     } catch (error) {
         console.error("Erreur lors de la récupération des émojis :", error);
