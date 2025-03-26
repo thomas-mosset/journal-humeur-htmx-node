@@ -15,12 +15,20 @@ const createHomepage = (emojiHTML) => /*html*/`
             </header>
 
             <main class="main">
+            <div id="error-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                    <p id="error-message"></p>
+                </div>
+            </div>
+
                 <div class="div-form">
                     <h2 class="div-form-title">Quelle est ton humeur aujourd'hui ?</h2>
                     <form 
                         hx-post="/moods" 
                         hx-target="#moods-list" 
                         hx-swap="beforeend"
+                        hx-on="before-request: document.querySelector('.form-err').innerHTML = ''"
                         class="form"
                     >
                         <div class="div-inside-form">
@@ -60,10 +68,30 @@ const createHomepage = (emojiHTML) => /*html*/`
             </main>
 
             <script>
+                /* EMOJI */
                 document.addEventListener("click", function (event) {
                     if (event.target.classList.contains("emoji")) {
                         document.getElementById("mood").value += event.target.dataset.value;
                     }
+                });
+
+
+                /* MODAL */
+                // Open modal with error message
+                function openModal(errorMessage) {
+                    document.getElementById("error-message").innerText = errorMessage; // Put message in the modal
+                    document.getElementById("error-modal").style.display = "block"; // Show modal
+                }
+
+                // Close modal
+                function closeModal() {
+                    document.getElementById("error-modal").style.display = "none"; // Hide le modal
+                }
+
+                // Listen to HTMX event to catch errors
+                document.body.addEventListener('htmx:responseError', function (event) {
+                    // If error event happens, open modal
+                    openModal(event.detail.xhr.responseText); // Show error message in modal
                 });
             </script>
         </body>
