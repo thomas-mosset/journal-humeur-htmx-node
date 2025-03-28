@@ -14,6 +14,7 @@ const EMOJI_API_URL = `https://emoji-api.com/emojis?access_key=${EMOJI_API_KEY}`
 import createHomepage from './views/index.js';
 import createListTemplate from './views/listTemplate.js';
 import createEditTemplate from './views/editTemplate.js';
+import createChartTemplate from './views/chartTemplate.js';
 
 // create app
 const app = express();
@@ -72,7 +73,6 @@ app.get('/moods', (req, res) => {
     });
 });
 
-
 app.get('/moods/edit/:id', async (req, res) => {
     const id = req.params.id;
     const query = `SELECT * FROM moods WHERE id = ?`;
@@ -102,6 +102,43 @@ app.get('/moods/edit/:id', async (req, res) => {
     }
 });
 
+app.get('/moods/chart', (req, res) => {
+    const query = `SELECT mood FROM moods`;
+
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            console.error("Erreur lors de la récupération des statistiques :", err);
+            return res.status(500).send("Erreur interne du serveur");
+        }
+        
+        let moodCount = {};
+
+        rows.forEach(row => {
+            // Break every emoji
+            const emojis = Array.from(row.mood);
+            
+            // Loop through the emojis
+            emojis.forEach(emoji => {
+                // if multiple emojis are the same...
+                if (moodCount[emoji]) {
+                    // ... we add 1 to count
+                    moodCount[emoji]++;
+                } else {
+                    // ... there's only one
+                    moodCount[emoji] = 1;
+                }
+            });
+        });
+
+        // Convert into an arrau [{ mood: "☺️", count: 3 }, ...]
+        const moodArray = Object.entries(moodCount).map(([mood, count]) =>( {
+            mood,
+            count
+        }));
+
+        res.send(createChartTemplate(moodArray))
+    });
+});
 
 // POST ROUTES
 app.post('/moods', (req, res) => {

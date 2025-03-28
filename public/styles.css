@@ -19,6 +19,10 @@ body {
     margin: 5rem 2rem;
 }
 
+.text-no-data {
+    text-align: center;
+}
+
 .form {
     display: flex;
     flex-wrap: wrap;
@@ -179,7 +183,6 @@ body {
     cursor: pointer;
 }
 
-
 #edit-modal {
     width: 100%;
 }
@@ -204,4 +207,41 @@ body {
 
 .div-inside-edit-form {
     margin-bottom: 1rem;
+}
+
+
+/* NAV */
+.nav{
+    padding: 0.8rem 1rem;
+    border: #c44601 solid 0.1rem;
+    border-radius: 5px;
+    background-color: #c44601;
+    color: white;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.nav-list {
+    display: flex;
+    justify-content: center;
+}
+
+.nav-list-element {
+    margin: 0 2rem;
+    list-style-type: none;
+}
+
+.nav-list-element-link {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-list-element-link:hover {
+    text-decoration: underline;
+}
+
+/* CHART */
+#moodChart {
+    width: 50%;
+    margin: 0 auto;
 }

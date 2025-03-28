@@ -12,6 +12,20 @@ const createHomepage = (emojiHTML) => /*html*/`
         <body>
             <header class="header">
                 <h1 class="header-title">Journal d'humeur</h1>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li class="nav-list-element">
+                            <a href="/" class="nav-list-element-link">
+                                Ajouter une humeur ➕
+                            </a>
+                        </li>
+                        <li class="nav-list-element">
+                            <a href="/moods/chart" class="nav-list-element-link">
+                                Accéder au graphique d'humeurs 📊
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </header>
 
             <main class="main">

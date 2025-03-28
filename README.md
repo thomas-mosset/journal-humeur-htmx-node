@@ -6,7 +6,7 @@
 - Back-end : Node + Express
 - Base de données : SQLite
 - API : [emoji-api](https://emoji-api.com/)
-- Autres : Node fetch + Dotenv
+- Autres : Node fetch + Dotenv + [Chart.js](https://www.chartjs.org/)
 
 ## Lancer l'app
 
