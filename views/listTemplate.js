@@ -5,7 +5,12 @@ const createListTemplate = (moods) => /*html*/`
             ${mood.comment ? `<span>${mood.comment}</span>` : ""}
 
             <div class="moods-btn">
-                <button>Modifier ✏️</button>
+                <button
+                    hx-get="/moods/edit/${mood.id}"
+                    hx-target="#edit-modal-content"
+                    hx-swap="innerHTML"
+                    hx-on::after-request="openEditModal()"
+                >Modifier ✏️</button>
                 <button 
                     hx-delete="/moods/${mood.id}"
                     hx-target="#mood-${mood.id}"

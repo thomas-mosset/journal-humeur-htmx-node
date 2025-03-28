@@ -13,6 +13,7 @@ const EMOJI_API_URL = `https://emoji-api.com/emojis?access_key=${EMOJI_API_KEY}`
 // Views
 import createHomepage from './views/index.js';
 import createListTemplate from './views/listTemplate.js';
+import createEditTemplate from './views/editTemplate.js';
 
 // create app
 const app = express();
@@ -69,6 +70,36 @@ app.get('/moods', (req, res) => {
 
         res.send(createListTemplate(rows));
     });
+});
+
+
+app.get('/moods/edit/:id', async (req, res) => {
+    const id = req.params.id;
+    const query = `SELECT * FROM moods WHERE id = ?`;
+
+    try {
+        const emojiHTML = await fetchEmojis(); // Récupération des émojis
+
+        // get the requested mood in db
+        db.get(query, [id], (err, row) => {
+            if (err) {
+                console.error("Erreur lors de la modification de l'humeur :", err);
+                return res.status(500).send("Erreur interne du serveur");
+            }
+
+            if (!row) {
+                return res.status(404).send("Humeur non trouvée");
+            }
+
+            // console.log("id", id, "row", row);
+
+            // return the edit form with mood's infos from db + emojis
+            res.send(createEditTemplate(row, emojiHTML));
+        });
+    } catch (err) {
+        console.error("Erreur lors de la récupération des emojis :", error);
+        res.status(500).send("Erreur lors du chargement des émojis.");
+    }
 });
 
 
@@ -154,10 +185,15 @@ app.post('/moods', (req, res) => {
                     ${comment ? `<span>${comment}</span>` : ""}
 
                     <div class="moods-btn">
-                        <button>Modifier ✏️</button>
+                        <button
+                            hx-get="/moods/edit/${insertedId}"
+                            hx-target="#edit-modal-content"
+                            hx-swap="innerHTML"
+                            hx-on::after-request="openEditModal();"
+                        >Modifier ✏️</button>
                         <button 
                             hx-delete="/moods/${insertedId}"
-                            hx-target="#mood-${insertedId}"
+                            hx-target="#mood-${insertedId}"back end e
                             hx-swap="delete"
                         >Supprimer ❌</button>
                     </div>
@@ -175,7 +211,122 @@ app.post('/select-emoji', (req, res) => {
 
 
 // EDIT ROUTES
-// TODO
+app.put('/moods/:id', (req, res) => {
+    const id = req.params.id;
+    const { date, mood, comment } = req.body;
+
+    // console.log("PUT request received for mood ID:", id);
+
+    // Vérifier si l'humeur existe
+    const selectQuery = `SELECT * FROM moods WHERE id = ?`;
+
+    db.get(selectQuery, [id], (err, row) => {
+        if (err) {
+            console.error("Erreur lors de la récupération de l'humeur :", err);
+            return res.status(500).send("Erreur interne du serveur");
+        }
+
+        if (!row) {
+            return res.status(404).send("Humeur non trouvée");
+        }
+
+        // Check if updated data are identical to the db data
+        if (row.date === date && row.mood === mood && row.comment === (comment || null)) {
+            return res.status(200); // if yes, we just send 200
+        }
+
+
+        // Check if date is in JJ-MM-AAAA format with a regex
+        const dateRegex = /^(\d{2})-(\d{2})-(\d{4})$/;
+        const match = date.trim().match(dateRegex); // trim() remove space
+
+        // If no match is found, return an error
+        if (!match) {
+            return res.status(400)
+                .set("HX-Trigger", "error")  // Trigger HTMX error event
+                .send("Format de date invalide. Utilisez JJ-MM-AAAA.");
+            
+        }
+
+        // Extract day, month, and year from the match groups
+        const [_, dateDay, dateMonth, dateYear] = match; // "_" -> don't need this value / it's a js convention
+
+        // Check if date or mood is set 
+        if (!date || !mood) {
+            return res.status(400)
+                .set("HX-Trigger", "error")  // Trigger HTMX error event
+                .send("Veuillez remplir tous les champs obligatoires.");
+        }
+
+        // Check if day is between 01 and 31
+        if (parseInt(dateDay) < 1 || parseInt(dateDay) > 31) {
+            return res.status(400)
+                .set("HX-Trigger", "error")  // Trigger HTMX error event
+                .send("Le jour (JJ) renseigné doit être compris entre 01 et 31.");
+        }
+
+        // Check if month is between 01 and 12
+        if (parseInt(dateMonth) < 1 || parseInt(dateMonth) > 12) {
+            return res.status(400)
+                .set("HX-Trigger", "error")  // Trigger HTMX error event
+                .send("Le mois (MM) renseigné doit être compris entre 01 et 12.");
+        }
+
+        // Check if year is between 1900 and this year
+        const currentYear = new Date().getFullYear();
+
+        if (parseInt(dateYear) < 1900 || parseInt(dateYear) > currentYear) {
+            return res.status(400)
+                .set("HX-Trigger", "error")  // Trigger HTMX error event
+                .send(`L'année (AAAA) renseignée doit être compris entre 1900 et l'année en cours (${currentYear}).`);
+        }
+
+        // Check if date is after today's date
+        const currentDate = new Date();
+        const providedDate = new Date(`${dateYear}-${dateMonth}-${dateDay}`);
+
+        if (providedDate > currentDate) {
+            return res.status(400)
+                .set("HX-Trigger", "error")  // Trigger HTMX error event
+                .send(`La date renseignée ne peut pas être postérieure à la date du jour.`);
+        }
+
+
+        // Update the mood
+        const updateQuery = `UPDATE moods SET date = ?, mood = ?, comment = ? WHERE id = ?`;
+
+        db.run(updateQuery, [date, mood, comment || null, id], function (err) {
+            if (err) {
+                console.error("Erreur lors de la mise à jour de l'humeur :", err);
+                return res.status(500).send("Erreur interne du serveur");
+            }
+
+            // console.log("Humeur mise à jour avec succès :", { id, date, mood, comment });
+
+            // Send the update directly into the list through HTMX
+            res.send(`
+                <li class="mood-list-item" id="mood-${id}">
+                    <span>${date} :</span> ${mood}
+                    ${comment ? `<span>${comment}</span>` : ""}
+
+                    <div class="moods-btn">
+                        <button
+                            hx-get="/moods/edit/${mood.id}"
+                            hx-target="#edit-modal-content"
+                            hx-swap="innerHTML"
+                            hx-on::after-request="openEditModal();"
+                        >Modifier ✏️</button>
+                        <button 
+                            hx-delete="/moods/${id}"
+                            hx-target="#mood-${id}"
+                            hx-swap="delete"
+                        >Supprimer ❌</button>
+                    </div>
+                </li>
+            `);
+        });
+    });
+});
 
 // DELETE ROUTES
 app.delete('/moods/:id', (req, res) => {

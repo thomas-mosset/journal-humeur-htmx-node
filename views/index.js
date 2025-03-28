@@ -15,13 +15,20 @@ const createHomepage = (emojiHTML) => /*html*/`
             </header>
 
             <main class="main">
-            <div id="error-modal" class="modal" style="display: none;">
-                <div class="modal-content">
-                    <span class="close-btn" onclick="closeModal()">&times;</span>
-                    <p id="error-message"></p>
+                <!-- DIV FOR ERROR MODAL -->
+                <div id="error-modal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeModal()">&times;</span>
+                        <p id="error-message"></p>
+                    </div>
                 </div>
-            </div>
 
+                <!-- DIV FOR EDIT MODAL -->
+                <div id="edit-modal" class="modal" style="display: none;">
+                    <div id="edit-modal-content" class="modal-content"></div>
+                </div>
+
+                <!-- DIV FOR ADD FORM -->
                 <div class="div-form">
                     <h2 class="div-form-title">Quelle est ton humeur aujourd'hui ?</h2>
                     <form 
@@ -43,10 +50,10 @@ const createHomepage = (emojiHTML) => /*html*/`
                                 type="button" 
                                 id="clear-mood"
                                 hx-on:click="document.getElementById('mood').value = ''"
-                            >Supprimer ❌</button> <!-- Bouton pour vider l'input des emojis -->
+                            >Supprimer ❌</button> <!-- BTN TO EMPTY EMOJIS INPUT  -->
 
                             <div id="emoji-picker-board">
-                                ${emojiHTML} <!-- Émojis chargés directement -->
+                                ${emojiHTML} <!-- EMOJIS CHARGED HERE DIRECTLY -->
                             </div>
                         </div>
 
@@ -71,12 +78,28 @@ const createHomepage = (emojiHTML) => /*html*/`
                 /* EMOJI */
                 document.addEventListener("click", function (event) {
                     if (event.target.classList.contains("emoji")) {
-                        document.getElementById("mood").value += event.target.dataset.value;
+                        // Check if modal is opened
+                        const editModal = document.getElementById("edit-modal");
+                        const isModalOpen = editModal.style.display === "block"; 
+
+                        if (isModalOpen) {
+                            // Add emoji to edit modal emoji input
+                            const moodModalInput = document.getElementById("mood-modal");
+                            if (moodModalInput) {
+                                moodModalInput.value += event.target.dataset.value;
+                            }
+                        } else {
+                            // Add emoji to the regular add form emoji input
+                            const moodInput = document.getElementById("mood");
+                            if (moodInput) {
+                                moodInput.value += event.target.dataset.value;
+                            }
+                        }
                     }
                 });
 
-
-                /* MODAL */
+        
+                /* ERROR MODAL */
                 // Open modal with error message
                 function openModal(errorMessage) {
                     document.getElementById("error-message").innerText = errorMessage; // Put message in the modal
@@ -92,6 +115,23 @@ const createHomepage = (emojiHTML) => /*html*/`
                 document.body.addEventListener('htmx:responseError', function (event) {
                     // If error event happens, open modal
                     openModal(event.detail.xhr.responseText); // Show error message in modal
+                });
+
+
+                // EDIT MODAL
+                function openEditModal() {
+                    document.getElementById("edit-modal").style.display = "block";
+                }
+
+                function closeEditModal() {
+                    document.getElementById("edit-modal").style.display = "none";
+                }
+
+                // Fermer la modale si on clique à l'extérieur
+                window.addEventListener("click", function (event) {
+                    if (event.target === document.getElementById("edit-modal")) {
+                        closeEditModal();
+                    }
                 });
             </script>
         </body>

@@ -128,7 +128,7 @@ body {
     margin-left: 1rem;
 }
 
-.moods-btn > button {
+.moods-btn > button, #close-modal {
     background-color: whitesmoke;
     border: rgb(156, 156, 156) solid 0.1rem;
     border-radius: 5px;
@@ -136,7 +136,7 @@ body {
     cursor: pointer;
 }
 
-.moods-btn > button:hover {
+.moods-btn > button:hover, #close-modal {
     border: #9c3700 solid 0.1rem;
 }
 
@@ -177,4 +177,31 @@ body {
     color: #9c3700;
     text-decoration: none;
     cursor: pointer;
+}
+
+
+#edit-modal {
+    width: 100%;
+}
+
+#edit-modal-content {
+    border-radius: 5px;
+    border: #c44601 solid 0.2rem;
+    font-weight: bold;
+    margin: 5% auto;
+    padding: 20px;
+    min-width: 80%;
+    text-align: center;
+}
+
+.edit-modal-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.div-inside-edit-form {
+    margin-bottom: 1rem;
 }
