@@ -93,75 +93,7 @@ const createHomepage = (emojiHTML) => /*html*/`
                 </div>
             </main>
 
-            <script>
-                /* EMOJI */
-                document.addEventListener("click", function (event) {
-                    if (event.target.classList.contains("emoji")) {
-                        // Check if modal is opened
-                        const editModal = document.getElementById("edit-modal");
-                        const isModalOpen = editModal.style.display === "block"; 
-
-                        if (isModalOpen) {
-                            // Add emoji to edit modal emoji input
-                            const moodModalInput = document.getElementById("mood-modal");
-                            if (moodModalInput) {
-                                moodModalInput.value += event.target.dataset.value;
-                            }
-                        } else {
-                            // Add emoji to the regular add form emoji input
-                            const moodInput = document.getElementById("mood");
-                            if (moodInput) {
-                                moodInput.value += event.target.dataset.value;
-                            }
-                        }
-                    }
-                });
-
-        
-                /* ERROR MODAL */
-                // Open modal with error message
-                function openModal(errorMessage) {
-                    document.getElementById("error-message").innerText = errorMessage; // Put message in the modal
-                    document.getElementById("error-modal").style.display = "block"; // Show modal
-                }
-
-                // Close modal
-                function closeModal() {
-                    document.getElementById("error-modal").style.display = "none"; // Hide le modal
-                }
-
-                // Listen to HTMX event to catch errors
-                document.body.addEventListener('htmx:responseError', function (event) {
-                    // If error event happens, open modal
-                    openModal(event.detail.xhr.responseText); // Show error message in modal
-                });
-
-
-                // EDIT MODAL
-                function openEditModal() {
-                    document.getElementById("edit-modal").style.display = "block";
-                }
-
-                function closeEditModal() {
-                    document.getElementById("edit-modal").style.display = "none";
-                }
-
-                // Fermer la modale si on clique à l'extérieur
-                window.addEventListener("click", function (event) {
-                    if (event.target === document.getElementById("edit-modal")) {
-                        closeEditModal();
-                    }
-                });
-
-                /* EXPORTS */
-                function exportToJSON() {
-                    window.location.href = "/moods/export-json";  // Download the JSON file
-                }
-
-                function exportToCSV() {
-                    window.location.href = "/moods/export-csv";  // Download the CSV file
-                }
-            </script>
+            <script src="/script.js"></script>
         </body>
     </html>
 `;

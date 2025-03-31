@@ -16,6 +16,10 @@ import createListTemplate from './views/listTemplate.js';
 import createEditTemplate from './views/editTemplate.js';
 import createChartTemplate from './views/chartTemplate.js';
 
+// Modules
+import fetchEmojis from './modules/emojisModule.js';
+import convertToCSV from './modules/convertCSVModule.js';
+
 // create app
 const app = express();
 app.use(express.urlencoded({extended: false}));
@@ -23,56 +27,11 @@ app.use(express.urlencoded({extended: false}));
 // static assets
 app.use(express.static('public'));
 
-
-// FUNCTIONS
-const fetchEmojis = async () => {
-    try {
-        const response = await fetch(EMOJI_API_URL);
-        const emojis = await response.json();
-        const relevantCategories = ["smileys-emotion", "people-body", "activities", "travel-places"];
-        const filteredEmojis = emojis.filter(emoji => relevantCategories.includes(emoji.group));
-
-        return filteredEmojis.map(emoji => `
-            <button 
-                class="emoji"
-                type="button"
-                data-value="${emoji.character}"
-            >${emoji.character}</button>
-        `).join("");
-    } catch (error) {
-        console.error("Erreur lors de la récupération des émojis :", error);
-        return "<p>Impossible de charger les émojis.</p>";
-    }
-};
-
-function convertToCSV(data) {
-    if (!data || data.length === 0) {
-        return "Aucune donnée à exporter.";
-    }
-
-    // Extract headers (key of the 1rst object)
-    const headers = Object.keys(data[0]);
-    const csvRows = [];
-
-    // Add the headers line
-    csvRows.push(headers.join(','));
-
-    // Add the rows of data
-    data.forEach(row => {
-        // Add formatted CSV line
-        csvRows.push(headers.map(header => `"${row[header]}"`).join(','));
-    });
-
-    // return all the CSV as a string
-    return csvRows.join('\n');
-};
-
-
 // GET ROUTES
 app.get('/', async (req, res) => {
     try {
         // Récupérer les émojis avant de créer la page
-        const emojiHTML = await fetchEmojis();
+        const emojiHTML = await fetchEmojis(EMOJI_API_URL);
         res.send(createHomepage(emojiHTML));
     } catch (error) {
         console.error("Erreur lors du chargement des émojis :", error);
@@ -100,7 +59,7 @@ app.get('/moods/edit/:id', async (req, res) => {
     const query = `SELECT * FROM moods WHERE id = ?`;
 
     try {
-        const emojiHTML = await fetchEmojis(); // Récupération des émojis
+        const emojiHTML = await fetchEmojis(EMOJI_API_URL); // Récupération des émojis
 
         // get the requested mood in db
         db.get(query, [id], (err, row) => {
@@ -194,7 +153,7 @@ app.get('/moods/export-csv', (req, res) => {
             return res.status(404).send('Aucune donnée à exporter.');
         }
 
-        // Convert data as CSV through the convertToCSV() function
+        // Convert data as CSV through the convertToCSV() function from the modules folder
         const csv = convertToCSV(rows);
 
         // Config HTTP header to be able to download the CSV file

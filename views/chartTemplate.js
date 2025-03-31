@@ -31,69 +31,11 @@ const createChartTemplate = (moodArray) => /*html*/`
 
             <main class="main">
                 <canvas id="moodChart"></canvas>
+                <!-- passing data, from backend (moodArray), to frontend (script.js) to create the chart pie -->
+                <div id="moodData" data-mood-array='${JSON.stringify(moodArray)}'></div>
             </main>
 
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    // Data received from the backend
-                    const moodData = ${JSON.stringify(moodArray)};
-
-                    // If no data from backend
-                    if (!moodData || moodData.length === 0) {
-                        document.getElementById("moodChart").style.display = "none"; 
-                        document.body.insertAdjacentHTML("beforeend", "<p class='text-no-data'>Aucune donnée disponible.</p>");
-                    
-                    // if there is data, show the pie chart
-                    } else {
-                        // Extract emojis et count
-                        const labels = moodData.map(item => item.mood);
-                        const counts = moodData.map(item => item.count);
-
-                        // Generate random color for each mood
-                        function generateRandomColor() {
-                            let letters = '0123456789ABCDEF';
-                            let color = '#';
-                            for (let i = 0; i < 6; i++) {
-                                color += letters[Math.floor(Math.random() * 16)];
-                            }
-                            return color;
-                        }
-
-                        const backgroundColors = labels.map(() => generateRandomColor());
-                        const borderColors = labels.map(() => generateRandomColor());
-
-                        // Create graph / chart
-                        const context = document.getElementById('moodChart').getContext('2d');
-                        new Chart(context, {
-                            type: 'pie',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    label: "Nombre de fois",
-                                    data: counts,
-                                    backgroundColor: backgroundColors,
-                                    borderColor: "black",
-                                    borderWidth: 1,
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                scale: {
-                                    y: {
-                                        beginAtZero: true,
-                                    }
-                                },
-                                plugins: {
-                                    title: {
-                                        display: true,
-                                        text: "Répartition des humeurs",
-                                    }
-                                }
-                            }
-                        });
-                    }
-                });
-            </script>
+            <script src="/script.js"></script>
         </body>
 `;
 
