@@ -211,7 +211,7 @@ body {
 
 
 /* NAV */
-.nav{
+.nav {
     padding: 0.8rem 1rem;
     border: #c44601 solid 0.1rem;
     border-radius: 5px;
@@ -223,11 +223,12 @@ body {
 
 .nav-list {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
 }
 
 .nav-list-element {
-    margin: 0 2rem;
+    margin: 0.5rem 2rem;
     list-style-type: none;
 }
 
@@ -244,4 +245,28 @@ body {
 #moodChart {
     width: 50%;
     margin: 0 auto;
+}
+
+/* EXPORTS */
+.moods-exports {
+    margin: 3rem auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.moods-exports-btn {
+    margin: 0 1.5rem;
+    padding: 0.8rem 1rem;
+    border: #c44601 solid 0.1rem;
+    border-radius: 5px;
+    background-color: #c44601;
+    color: white;
+    font-family: "Gill Sans", sans-serif;
+    cursor: pointer;
+}
+
+.moods-exports-btn:hover {
+    background-color: #9c3700;
+    border: #9c3700 solid 0.1rem;
 }

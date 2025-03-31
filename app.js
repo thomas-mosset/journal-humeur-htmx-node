@@ -45,6 +45,28 @@ const fetchEmojis = async () => {
     }
 };
 
+function convertToCSV(data) {
+    if (!data || data.length === 0) {
+        return "Aucune donnée à exporter.";
+    }
+
+    // Extract headers (key of the 1rst object)
+    const headers = Object.keys(data[0]);
+    const csvRows = [];
+
+    // Add the headers line
+    csvRows.push(headers.join(','));
+
+    // Add the rows of data
+    data.forEach(row => {
+        // Add formatted CSV line
+        csvRows.push(headers.map(header => `"${row[header]}"`).join(','));
+    });
+
+    // return all the CSV as a string
+    return csvRows.join('\n');
+};
+
 
 // GET ROUTES
 app.get('/', async (req, res) => {
@@ -137,6 +159,50 @@ app.get('/moods/chart', (req, res) => {
         }));
 
         res.send(createChartTemplate(moodArray))
+    });
+});
+
+app.get('/moods/export-json', (req, res) => {
+    const query = `SELECT * FROM moods`;
+
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            console.error("Erreur lors de la récupération des humeurs :", err);
+            return res.status(500).send("Erreur interne du serveur");
+        }
+
+        // test to see data : res.json(rows);
+
+        // Data send as JSON
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Content-Disposition', 'attachment; filename="moods.json"');
+        res.send(JSON.stringify(rows, null, 2)) // Indentation for better visibility
+
+    })
+});
+
+app.get('/moods/export-csv', (req, res) => {
+    const query = `SELECT * FROM moods`;
+
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            console.error("Erreur lors de la récupération des humeurs :", err);
+            return res.status(500).send("Erreur inetrne du serveur.");
+        }
+
+        if (rows.length === 0) {
+            return res.status(404).send('Aucune donnée à exporter.');
+        }
+
+        // Convert data as CSV through the convertToCSV() function
+        const csv = convertToCSV(rows);
+
+        // Config HTTP header to be able to download the CSV file
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename="moods.csv');
+
+        // Send to client the csv file
+        res.send(csv);
     });
 });
 

@@ -86,6 +86,11 @@ const createHomepage = (emojiHTML) => /*html*/`
                     <h2 class="moods-title">Historique des humeurs</h2>
                     <ul id="moods-list" hx-get="/moods" hx-trigger="load" hx-swap="innerHTML"></ul>
                 </div>
+
+                <div class="moods-exports">
+                    <button class="moods-exports-btn" onclick="exportToJSON()">Exporter les données en format JSON</button>
+                    <button class="moods-exports-btn" onclick="exportToCSV()">Exporter les données en format CSV</button>
+                </div>
             </main>
 
             <script>
@@ -147,6 +152,15 @@ const createHomepage = (emojiHTML) => /*html*/`
                         closeEditModal();
                     }
                 });
+
+                /* EXPORTS */
+                function exportToJSON() {
+                    window.location.href = "/moods/export-json";  // Download the JSON file
+                }
+
+                function exportToCSV() {
+                    window.location.href = "/moods/export-csv";  // Download the CSV file
+                }
             </script>
         </body>
     </html>
