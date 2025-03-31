@@ -1,5 +1,8 @@
 # Dependency directories
-node_modules/
+node_modules
 
 # DB
 journal_humeur.db
+
+# Sensible data
+.env

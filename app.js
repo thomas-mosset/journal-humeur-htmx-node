@@ -1,6 +1,13 @@
 import express from 'express';
+// import fetch from "node-fetch";
+// import db from "./config/database.js";
 
-import createHomepage from './views/index.js';
+// .env file
+import dotenv from 'dotenv';
+dotenv.config();
+
+// Import Router
+import routes from './routes/routes.js';
 
 // create app
 const app = express();
@@ -9,11 +16,8 @@ app.use(express.urlencoded({extended: false}));
 // static assets
 app.use(express.static('public'));
 
-// routes
-app.get('/', (req, res) => {
-    res.send(createHomepage());
-});
-
+// Use routes
+app.use('/', routes); 
 
 // listen to port
 app.listen(3000, () => {

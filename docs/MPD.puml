@@ -1,0 +1,8 @@
+@startuml Moods
+entity "Moods" as M {
+    + id : INTEGER <<PK, AUTO_INCREMENT>>
+    + date : VARCHAR(10) <<U, NOT NULL>> // Format: DD-MM-YYYY
+    + mood : VARCHAR(50) <<NOT NULL>> // Chosen mood (emoji)
+    + comment : TEXT <<NULL>> // Optional comment
+}
+@enduml

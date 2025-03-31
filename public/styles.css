@@ -1,0 +1,272 @@
+/* GENERAL */
+body {
+    font-family: "Gill Sans", sans-serif;
+}
+
+/* HEADER */
+.header {
+    margin: 5rem 2rem;
+    text-align: center;
+}
+
+.header-title {
+    color: #c44601;
+}
+
+
+/* MAIN */
+.main {
+    margin: 5rem 2rem;
+}
+
+.text-no-data {
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.div-form-title, .moods-title {
+    margin-left: 1rem;
+}
+
+.div-form-title, .moods-title {
+    color: #c44601;
+    text-align: center;
+}
+
+.form > div {
+    margin: 1rem;
+}
+
+.div-inside-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-label {
+    margin-right: 0.3rem;
+}
+
+#emoji-picker-board {
+    width: 100%;
+    margin: 2rem 1rem;
+    padding: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: whitesmoke;
+    border: whitesmoke solid 1px;
+    border-radius: 5px;
+}
+
+.emoji {
+    margin: 0.2rem 0.1rem;
+    border: rgb(156, 156, 156) solid 0.1rem;
+    border-radius: 5px;
+    background-color: whitesmoke;
+}
+
+#clear-mood {
+    margin: 0 0.3rem;
+    background-color: whitesmoke;
+    border: rgb(156, 156, 156) solid 0.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#clear-mood:hover {
+    border: #9c3700 solid 0.1rem;
+}
+
+.form-textarea {
+    width: 85%;
+    margin-top: 1rem;
+}
+
+.div-btn {
+    text-align: center;
+    padding: 3rem 0;
+    width: 100%;
+}
+
+.form-btn {
+    padding: 0.8rem 1rem;
+    border: #c44601 solid 0.1rem;
+    border-radius: 5px;
+    background-color: #c44601;
+    color: white;
+    font-family: "Gill Sans", sans-serif;
+    cursor: pointer;
+}
+
+.form-btn:hover {
+    background-color: #9c3700;
+    border: #9c3700 solid 0.1rem;
+}
+
+/* MOOD LIST */
+.mood-list-item {
+    list-style: none;
+    margin: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.mood-list-item > span {
+    margin: 0 0.3rem;
+}
+
+.mood-list-item > span:first-child {
+    font-weight: bold;
+}
+
+.moods-btn {
+    margin-left: 1rem;
+}
+
+.moods-btn > button, #close-modal {
+    background-color: whitesmoke;
+    border: rgb(156, 156, 156) solid 0.1rem;
+    border-radius: 5px;
+    font-family: "Gill Sans", sans-serif;
+    cursor: pointer;
+}
+
+.moods-btn > button:hover, #close-modal {
+    border: #9c3700 solid 0.1rem;
+}
+
+/* Style modal */
+.modal {
+    display: none; /* hide by default */
+    position: fixed;
+    z-index: 1; /* place above all other elements */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* dack bg */
+}
+
+.modal-content {
+    border-radius: 5px;
+    border: #c44601 solid 0.2rem;
+    background-color: #fefefe;
+    font-weight: bold;
+    margin: 15% auto;
+    padding: 20px;
+    width: 80%; /* modal size */
+    max-width: 500px;
+    text-align: center;
+}
+
+.close-btn {
+    color: #c44601;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #9c3700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#edit-modal {
+    width: 100%;
+}
+
+#edit-modal-content {
+    border-radius: 5px;
+    border: #c44601 solid 0.2rem;
+    font-weight: bold;
+    margin: 5% auto;
+    padding: 20px;
+    min-width: 80%;
+    text-align: center;
+}
+
+.edit-modal-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.div-inside-edit-form {
+    margin-bottom: 1rem;
+}
+
+
+/* NAV */
+.nav {
+    padding: 0.8rem 1rem;
+    border: #c44601 solid 0.1rem;
+    border-radius: 5px;
+    background-color: #c44601;
+    color: white;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.nav-list-element {
+    margin: 0.5rem 2rem;
+    list-style-type: none;
+}
+
+.nav-list-element-link {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-list-element-link:hover {
+    text-decoration: underline;
+}
+
+/* CHART */
+#moodChart {
+    width: 50%;
+    margin: 0 auto;
+}
+
+/* EXPORTS */
+.moods-exports {
+    margin: 3rem auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.moods-exports-btn {
+    margin: 0 1.5rem;
+    padding: 0.8rem 1rem;
+    border: #c44601 solid 0.1rem;
+    border-radius: 5px;
+    background-color: #c44601;
+    color: white;
+    font-family: "Gill Sans", sans-serif;
+    cursor: pointer;
+}
+
+.moods-exports-btn:hover {
+    background-color: #9c3700;
+    border: #9c3700 solid 0.1rem;
+}
